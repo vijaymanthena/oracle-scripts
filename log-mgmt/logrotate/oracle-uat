@@ -1,0 +1,63 @@
+/u01/app/oracle/diag/rdbms/*uat*/*uat*/trace/*.log
+/u01/app/oracle/diag/rdbms/*sit*/*sit*/trace/*.log
+/u01/app/oracle/diag/rdbms/*stb*/*stb*/trace/*.log
+/u01/app/oracle/diag/rdbms/*trn*/*trn*/trace/*.log
+  {
+    daily
+    rotate 7
+    compress
+    copytruncate
+    missingok
+    nodateext
+    size 10M
+    lastaction
+       find /u01/app/oracle/admin/*uat*/adump -type f -name '*.aud' -mtime +3 -delete
+       find /u01/app/oracle/admin/*sit*/adump -type f -name '*.aud' -mtime +3 -delete
+       find /u01/app/oracle/admin/*stb*/adump -type f -name '*.aud' -mtime +3 -delete
+       find /u01/app/oracle/admin/*trn*/adump -type f -name '*.aud' -mtime +3 -delete
+    endscript
+}
+
+/u01/app/oracle/product/*/dbhome_1/rdbms/log/hs_core_*/*.trc
+/u01/app/oracle/product/*/dbhome_1/rdbms/log/hs_core_*/core.*
+{
+  daily
+  delete
+  missingok
+  lastaction
+     find /u01/app/oracle/product/12.1.0.2/dbhome_1/rdbms/log -type d -name 'hs_core_*' -mtime +1 -exec rm -rf {} \;
+  endscript
+}
+
+/u01/app/grid/diag/tnslsnr/*/crg_test_*/trace/crg_test_*.log
+{
+weekly
+compress
+rotate 2
+missingok
+create 640 grid oinstall
+prerotate
+   su - grid -c "/usr/local/bin/lsnr_log_off +ASM crg_test_m2x2"
+   su - grid -c "/usr/local/bin/lsnr_log_off +ASM crg_test_m1x1"
+endscript
+postrotate
+   su - grid -c "/usr/local/bin/lsnr_log_on +ASM crg_test_m2x2"
+   su - grid -c "/usr/local/bin/lsnr_log_on +ASM crg_test_m1x1"
+endscript
+}
+
+/u01/app/oracle/diag/tnslsnr/*/djnonprod*/trace/djnonprod*.log
+{
+  weekly
+  compress
+  rotate 2
+  missingok
+  size 20M
+  create 640 oracle oinstall
+  prerotate
+    su - oracle -c "/usr/local/bin/lsnr_log_off djrmssit djnonprod"
+  endscript
+  postrotate
+    su - oracle -c "/usr/local/bin/lsnr_log_on djrmssit djnonprod"
+  endscript
+}

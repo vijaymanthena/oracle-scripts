@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Vijay Manthena -- October 19 2021
+# Purge Grid Infrastructure ADR log files older than 8 days (dumps and traces) and 30 days (Alerts & Incidents)
+# This script should be copied to /etc/cron.daily
+
+# Added the GI XML and *.tr* files to be purged using adrci purge as specified in
+# How to purge GI files from ADR HOME in 12.1.0.2 and above (Doc ID 1969131.1)
+
+
+ASM_OWN=`ps -ef | grep asm_pmon  | awk '{print $1}'`
+
+su - $ASM_OWN -c '. oraenv <<< `ps -ef | grep pmon | grep asm | sed s"/^.*+/+/" | head -1` > /dev/null; /usr/local/bin/adr_purge.sh 8 30'

@@ -1,0 +1,51 @@
+/u01/app/grid/diag/tnslsnr/*/listener_scan1/trace/*.log
+{
+  weekly
+  rotate 4
+  compress
+  copytruncate
+  delaycompress
+  create 0640 grid oinstall
+  notifempty
+  prerotate
+     su - grid -c "/usr/local/bin/lsnr_log_off +ASM listener_scan1"
+  endscript
+  postrotate
+     su - grid -c "/usr/local/bin/lsnr_log_on +ASM listener_scan1"
+  endscript
+}
+
+/u01/app/grid/diag/tnslsnr/*/listener_scan3/trace/*.log
+{
+  weekly
+  rotate 4
+  compress
+  copytruncate
+  delaycompress
+  create 0640 grid oinstall
+  notifempty
+  prerotate
+     su - grid -c "/usr/local/bin/lsnr_log_off +ASM listener_scan3"
+  endscript
+  postrotate
+     su - grid -c "/usr/local/bin/lsnr_log_on +ASM listener_scan3"
+  endscript
+}
+
+/u01/app/grid/diag/tnslsnr/*/listener_scan2/trace/*.log
+{
+  weekly
+  rotate 4
+  compress
+  copytruncate
+  delaycompress
+  create 0640 grid oinstall
+  notifempty
+  prerotate
+     su - grid -c "/usr/local/bin/lsnr_log_off +ASM listener_scan2"
+  endscript
+  postrotate
+     su - grid -c "/usr/local/bin/lsnr_log_on +ASM listener_scan2"
+  endscript
+}
+

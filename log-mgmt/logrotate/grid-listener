@@ -1,0 +1,42 @@
+# Author: DGT
+# Date:   06/11/15
+# Refer:  SI-2375
+#
+# Desc:
+# Carefull editing this script there is a prerotate script in the first rotation
+# to switch off listener logging and then a post script in the last rotation
+# to switch it back on.
+#
+#############################################################################
+
+
+
+/u01/app/grid/diag/tnslsnr/*/listener/trace/listener.log
+{
+weekly
+compress
+rotate 4
+missingok
+create 640 grid oinstall
+prerotate
+   su - grid -c "/usr/local/bin/lsnr_log_off +ASM listener"
+endscript
+postrotate
+   su - grid -c "/usr/local/bin/lsnr_log_on +ASM listener"
+endscript
+}
+
+/u01/app/grid/diag/tnslsnr/crg?lx20?/asmnet?lsnr_asm/trace/asmnet?lsnr_asm*.log
+{
+weekly
+compress
+rotate 4
+missingok
+create 640 grid oinstall
+prerotate
+   su - grid -c "/usr/local/bin/lsnr_log_off +ASM ASMNET1LSNR_ASM"
+endscript
+postrotate
+   su - grid -c "/usr/local/bin/lsnr_log_on +ASM ASMNET1LSNR_ASM"
+endscript
+}
